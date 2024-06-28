@@ -23,7 +23,7 @@
     "tsc": "rimraf dist && tsc"
   },
   "dependencies": {
-    "@visue/utils": "^0.1.0"
+    "@visue/utils": "^0.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",

@@ -1,9 +1,10 @@
+import { Optional } from '@visue/utils';
 import { Identifiable } from '@visue/utils/identifier';
 
 /**
  * サービスのコンフィグ
  */
-export type ServiceConfig = Identifiable & {
+export type ServiceConfig = Optional<Identifiable, '$id'> & {
   /**
    * 種別
    */
@@ -78,7 +79,6 @@ export type RegistrationInformation<
 /**
  * 登録可能なサービス
  */
-export type RegistrableService<
-  I extends IService = IService,
-  C extends ServiceConfig = ServiceConfig,
-> = ServiceConstructor<I, C> & ServiceInformation<I, C>;
+export type RegistrableService<I extends IService = IService, C extends ServiceConfig = ServiceConfig> =
+  | ServiceConstructor<I, C>
+  | ServiceInformation<I, C>;

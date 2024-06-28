@@ -2289,9 +2289,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@visue/di@workspace:.":
+"@visue/factory@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@visue/di@workspace:."
+  resolution: "@visue/factory@workspace:."
   dependencies:
     "@babel/core": "npm:^7.17.9"
     "@babel/plugin-transform-modules-commonjs": "npm:^7.21.2"
@@ -2309,7 +2309,7 @@ __metadata:
     "@types/lodash": "npm:^4.14.195"
     "@types/lodash-es": "npm:^4.17.6"
     "@visue/dev": "npm:^0.1.0"
-    "@visue/utils": "npm:^0.1.0"
+    "@visue/utils": "npm:^0.1.1"
     babel-jest: "npm:^29.5.0"
     eslint: "npm:^9.3.0"
     eslint-config-prettier: "npm:^9.1.0"
@@ -2329,16 +2329,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@visue/utils@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@visue/utils@npm:0.1.0"
+"@visue/utils@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "@visue/utils@npm:0.1.1"
   dependencies:
     bignumber.js: "npm:^9.1.1"
     date-fns: "npm:^2.29.3"
     geolib: "npm:^3.3.4"
+    iconv-lite: "npm:^0.6.3"
+    jsesc: "npm:^3.0.2"
     lodash: "npm:^4.17.21"
     nanoid: "npm:^4.0.1"
-  checksum: 10c0/c203bde402e3e571f78ba853efa3d6a1a84cefd2f19baf3b53afbf37746aa795eca14d4e811a048b40a607a8e8ab92b62cd135fa958597bd3d002995a979ddfb
+    uuid: "npm:^10.0.0"
+  checksum: 10c0/57558e1b0b9dd3f77d8e733d93a33ed9c4b7cc284109c73a16cf1c8705af83e2791ddd82e89e7e50ba4b8afabaa1f49aa897dcefda72b9788d087c8dbfaf356b
   languageName: node
   linkType: hard
 
@@ -3890,7 +3893,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iconv-lite@npm:^0.6.2":
+"iconv-lite@npm:^0.6.2, iconv-lite@npm:^0.6.3":
   version: 0.6.3
   resolution: "iconv-lite@npm:0.6.3"
   dependencies:
@@ -4683,6 +4686,15 @@ __metadata:
   bin:
     jsesc: bin/jsesc
   checksum: 10c0/dbf59312e0ebf2b4405ef413ec2b25abb5f8f4d9bc5fb8d9f90381622ebca5f2af6a6aa9a8578f65903f9e33990a6dc798edd0ce5586894bf0e9e31803a1de88
+  languageName: node
+  linkType: hard
+
+"jsesc@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "jsesc@npm:3.0.2"
+  bin:
+    jsesc: bin/jsesc
+  checksum: 10c0/ef22148f9e793180b14d8a145ee6f9f60f301abf443288117b4b6c53d0ecd58354898dc506ccbb553a5f7827965cd38bc5fb726575aae93c5e8915e2de8290e1
   languageName: node
   linkType: hard
 
@@ -6812,6 +6824,15 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 10c0/41a5bdd214df2f6c3ecf8622745e4a366c4adced864bc3c833739791aeeeb1838119af7daed4ba36428114b5c67dcda034a79c882e97e43c03e66a4dd7389942
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "uuid@npm:10.0.0"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 10c0/eab18c27fe4ab9fb9709a5d5f40119b45f2ec8314f8d4cf12ce27e4c6f4ffa4a6321dc7db6c515068fa373c075b49691ba969f0010bf37f44c37ca40cd6bf7fe
   languageName: node
   linkType: hard
 

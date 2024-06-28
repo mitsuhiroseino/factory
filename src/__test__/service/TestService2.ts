@@ -1,6 +1,6 @@
 import { IService } from 'src/types';
 
-export default class TestService1 implements IService {
+export default class TestService2 implements IService {
   /**
    * カテゴリー
    */
@@ -9,12 +9,7 @@ export default class TestService1 implements IService {
   /**
    * 種別
    */
-  static TYPE = 'test1';
-
-  /**
-   * 種別
-   */
-  static ALTS = ['Test1', 'TEST1'];
+  static TYPE = 'test2';
 
   /**
    * ID

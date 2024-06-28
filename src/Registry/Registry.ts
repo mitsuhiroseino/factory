@@ -20,7 +20,7 @@ class Registry {
    */
   register<S extends IService = IService, C extends ServiceConfig = ServiceConfig>(
     category: string,
-    targets: RegistrableService<S, C> | RegistrableService<S, C>[],
+    targets: RegistrableService<S, C> | RegistrableService<IService, C>[],
   ) {
     for (const target of asArray(targets)) {
       this._register(category, target);
@@ -34,11 +34,11 @@ class Registry {
     let service: RegistrationInformation<I, C>;
     if (isPlainObject(target)) {
       // Productの場合
-      const serviceConfig = target as ServiceInformation<I, C>;
-      service = {
-        ...serviceConfig,
-        singletonConfig: { ...serviceConfig.singletonConfig },
-      };
+      const { singletonConfig, ...rest } = target as ServiceInformation<I, C>;
+      service = rest;
+      if (singletonConfig) {
+        service.singletonConfig = { ...singletonConfig };
+      }
     } else {
       // FactoryableConstructorの場合
       service = {
