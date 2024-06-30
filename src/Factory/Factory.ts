@@ -6,8 +6,8 @@ import warehouse from '../Warehouse';
 import { FactoryConfig } from './types';
 
 /**
- * Creatorで製造するサービスの管理を行うクラス
- * Creatorとservicesを直接紐づけることで循環参照が発生することを回避する
+ * ファクトリークラス
+ * Registry、Creator、Warehouseのメソッドにアクセスする
  */
 class Factory<S extends any = any, MC extends FactoryConfig<S> = FactoryConfig<S>> {
   /**
@@ -25,6 +25,9 @@ class Factory<S extends any = any, MC extends FactoryConfig<S> = FactoryConfig<S
    */
   private _registry = registry;
 
+  /**
+   * カテゴリー
+   */
   private _category: string;
 
   constructor(config: MC) {
@@ -36,7 +39,7 @@ class Factory<S extends any = any, MC extends FactoryConfig<S> = FactoryConfig<S
   }
 
   /**
-   * serviceをCreatorに登録する
+   * serviceを纏めて登録する
    * @param service クラス
    */
   registerAll(services: RegistrationSetting<S>[]) {
@@ -44,7 +47,7 @@ class Factory<S extends any = any, MC extends FactoryConfig<S> = FactoryConfig<S
   }
 
   /**
-   * serviceをCreatorに登録する
+   * serviceを登録する
    * @param service クラス
    */
   register(type: string, Class: Constructor<S>, options?: RegisterOptions) {
@@ -52,7 +55,8 @@ class Factory<S extends any = any, MC extends FactoryConfig<S> = FactoryConfig<S
   }
 
   /**
-   * targetがFactoryableConfigの場合はインスタンスを取得する
+   * targetが文字列の場合はインスタンスを取得する
+   * 文字列以外の場合はそのまま返す
    * @param target
    * @returns
    */
@@ -61,7 +65,7 @@ class Factory<S extends any = any, MC extends FactoryConfig<S> = FactoryConfig<S
   }
 
   /**
-   * targetsがtypeやFactoryableConfigの場合はインスタンスを取得する
+   * インスタンスを纏めて取得する
    * @param targets
    * @returns
    */
@@ -70,7 +74,7 @@ class Factory<S extends any = any, MC extends FactoryConfig<S> = FactoryConfig<S
   }
 
   /**
-   * インスタンスを生成して返却する
+   * インスタンスを生成する
    * @param type 種別
    * @param config コンフィグ
    */
@@ -79,7 +83,7 @@ class Factory<S extends any = any, MC extends FactoryConfig<S> = FactoryConfig<S
   }
 
   /**
-   * 指定の種別が存在するか
+   * 指定の種別が存在するか判定する
    * @param type 種別
    * @returns
    */

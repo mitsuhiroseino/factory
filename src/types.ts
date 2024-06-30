@@ -46,3 +46,18 @@ export type RegisterOptions<ARGS = unknown[]> = {
  * 登録可能なサービス
  */
 export type RegistrableService<I = any> = Constructor<I> | RegistrationSetting<I>;
+
+/**
+ * サービスのインスタンスを取得する際の設定
+ */
+export type ServiceConfig = {
+  /**
+   * 種別
+   */
+  type: string;
+
+  /**
+   * コンストラクターの引数
+   */
+  args?: unknown[];
+};

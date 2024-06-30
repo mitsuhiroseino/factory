@@ -1,6 +1,8 @@
 import asArray from '@visue/utils/array/asArray';
+import isPlainObject from 'lodash/isPlainObject';
 import isString from 'lodash/isString';
 import warehouse from '../Warehouse';
+import { ServiceConfig } from '../types';
 
 /**
  * サービスのインスタンスを作るクラス
@@ -11,8 +13,11 @@ class Creator {
    * @param target
    * @returns
    */
-  get<S extends any>(category: string, target: string | S): S {
-    if (isString(target)) {
+  get<S>(category: string, target: string | ServiceConfig | any): S {
+    if (isPlainObject(target)) {
+      const conifg = target as ServiceConfig;
+      return this.create(category, conifg.type, conifg.args);
+    } else if (isString(target)) {
       return this.create(category, target as string);
     } else {
       return target as S;
@@ -24,7 +29,7 @@ class Creator {
    * @param targets
    * @returns
    */
-  from<S extends any>(category: string, targets: string | S | (string | S)[]): S[] {
+  from<S extends any>(category: string, targets: string | ServiceConfig | S | (string | ServiceConfig | S)[]): S[] {
     return asArray(targets).map((target) => this.get<S>(category, target));
   }
 
