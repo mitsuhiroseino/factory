@@ -1,9 +1,6 @@
 import asArray from '@visue/utils/array/asArray';
-import isPlainObject from 'lodash/isPlainObject';
 import isString from 'lodash/isString';
 import warehouse from '../Warehouse';
-import setupFactoryable from '../helpers/setupService';
-import { IService, ServiceConfig, ServiceConstructor } from '../types';
 
 /**
  * サービスのインスタンスを作るクラス
@@ -14,12 +11,9 @@ class Creator {
    * @param target
    * @returns
    */
-  get<S extends IService = IService, C extends ServiceConfig = ServiceConfig>(
-    category: string,
-    target: string | C | S,
-  ): S {
-    if (isString(target) || isPlainObject(target)) {
-      return this.create(category, target as string | C);
+  get<S extends any>(category: string, target: string | S): S {
+    if (isString(target)) {
+      return this.create(category, target as string);
     } else {
       return target as S;
     }
@@ -30,11 +24,8 @@ class Creator {
    * @param targets
    * @returns
    */
-  from<S extends IService = IService, C extends ServiceConfig = ServiceConfig>(
-    category: string,
-    targets: string | C | S | (string | C | S)[],
-  ): S[] {
-    return asArray(targets).map((target) => this.get<S, C>(category, target));
+  from<S extends any>(category: string, targets: string | S | (string | S)[]): S[] {
+    return asArray(targets).map((target) => this.get<S>(category, target));
   }
 
   /**
@@ -42,42 +33,21 @@ class Creator {
    * @param target 種別または設定
    * @param config 設定
    */
-  create<S extends IService = IService, C extends ServiceConfig = ServiceConfig>(
-    category: string,
-    target: C | string,
-    config?: Omit<C, 'type'>,
-  ): S {
-    let type, cfg;
-    if (isString(target)) {
-      type = target;
-      cfg = { type, ...config };
-    } else {
-      type = target.type;
-      cfg = target;
-    }
+  create<S extends any>(category: string, type: string, args: unknown[] = []): S {
     const service = warehouse.get(category, type);
-    const { Class: ServiceClass, singleton, singletonConfig, instance } = service;
+    const { Class: ServiceClass, singleton, singletonArgs, instance } = service;
     if (singleton) {
       // シングルトンの場合
       // シングルトンインスタンスを返す
       if (!instance) {
-        service.instance = this._createInstance(ServiceClass, singletonConfig);
+        service.instance = new ServiceClass(...singletonArgs);
       }
       return service.instance;
-    } else if (ServiceClass) {
+    } else {
       // クラスの場合
       // 新しいインスタンスを作る
-      return this._createInstance(ServiceClass, cfg);
+      return new ServiceClass(...args);
     }
-  }
-
-  private _createInstance<S extends IService = IService, C extends ServiceConfig = ServiceConfig>(
-    ServiceClass: ServiceConstructor<S, C>,
-    config?: C,
-  ) {
-    const instance = new ServiceClass(config);
-    setupFactoryable(instance, config);
-    return instance;
   }
 }
 export default new Creator();

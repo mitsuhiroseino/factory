@@ -6,67 +6,113 @@ import TestService2 from './service/TestService2';
 
 describe('Registry', () => {
   describe('register', () => {
-    test('クラス 1件', () => {
+    test('クラス', () => {
       const category = generateId();
-      registry.register(category, TestService1);
-      const result = warehouse.get(category, TestService1.TYPE);
-      expect(result).toEqual({ Class: TestService1 });
-      const result1 = warehouse.get(category, TestService1.ALTS[0]);
-      expect(result1).toEqual({ Class: TestService1 });
-      const result2 = warehouse.get(category, TestService1.ALTS[1]);
-      expect(result2).toEqual({ Class: TestService1 });
+      const type = generateId();
+      registry.register(category, type, TestService1);
+      const result = warehouse.get(category, type);
+      expect(result).toEqual({ category, type, Class: TestService1 });
     });
 
-    test('クラス 2件', () => {
+    test('シングルトン', () => {
       const category = generateId();
-      registry.register(category, [TestService1, TestService2]);
-      const result1 = warehouse.get(category, TestService1.TYPE);
-      expect(result1).toEqual({ Class: TestService1 });
-      const result2 = warehouse.get(category, TestService2.TYPE);
-      expect(result2).toEqual({ Class: TestService2 });
+      const type = generateId();
+      registry.register(category, type, TestService1, { singleton: true, singletonArgs: [123, 'abc'] });
+      const result = warehouse.get(category, type);
+      expect(result).toEqual({ category, type, Class: TestService1, singleton: true, singletonArgs: [123, 'abc'] });
     });
+  });
 
-    test('登録情報 1件', () => {
+  describe('registerAll', () => {
+    test('クラス', () => {
       const category = generateId();
-      registry.register(category, { Class: TestService1, singleton: true, singletonConfig: {} });
-      const result = warehouse.get(category, TestService1.TYPE);
-      expect(result).toEqual({ Class: TestService1, singleton: true, singletonConfig: {} });
-    });
-
-    test('登録情報 2件', () => {
-      const category = generateId();
-      registry.register(category, [
-        { Class: TestService1, singleton: true, singletonConfig: {} },
-        { Class: TestService2 },
+      const type1 = generateId();
+      const type2 = generateId();
+      registry.registerAll(category, [
+        { type: type1, Class: TestService1 },
+        { type: type2, Class: TestService2 },
       ]);
-      const result1 = warehouse.get(category, TestService1.TYPE);
-      expect(result1).toEqual({ Class: TestService1, singleton: true, singletonConfig: {} });
-      const result2 = warehouse.get(category, TestService2.TYPE);
-      expect(result2).toEqual({ Class: TestService2 });
+      const result1 = warehouse.get(category, type1);
+      expect(result1).toEqual({ category, type: type1, Class: TestService1 });
+      const result2 = warehouse.get(category, type2);
+      expect(result2).toEqual({ category, type: type2, Class: TestService2 });
+    });
+
+    test('シングルトン', () => {
+      const category = generateId();
+      const type1 = generateId();
+      const type2 = generateId();
+      registry.registerAll(category, [
+        { type: type1, Class: TestService1, singleton: true, singletonArgs: [123, 'abc'] },
+        { type: type2, Class: TestService2, singleton: true, singletonArgs: [123, 'ABC'] },
+      ]);
+      const result1 = warehouse.get(category, type1);
+      expect(result1).toEqual({
+        category,
+        type: type1,
+        Class: TestService1,
+        singleton: true,
+        singletonArgs: [123, 'abc'],
+      });
+      const result2 = warehouse.get(category, type2);
+      expect(result2).toEqual({
+        category,
+        type: type2,
+        Class: TestService2,
+        singleton: true,
+        singletonArgs: [123, 'ABC'],
+      });
+    });
+
+    test('クラス & シングルトン', () => {
+      const category = generateId();
+      const type1 = generateId();
+      const type2 = generateId();
+      registry.registerAll(category, [
+        { type: type1, Class: TestService1 },
+        { type: type2, Class: TestService2, singleton: true, singletonArgs: [123, 'ABC'] },
+      ]);
+      const result1 = warehouse.get(category, type1);
+      expect(result1).toEqual({
+        category,
+        type: type1,
+        Class: TestService1,
+      });
+      const result2 = warehouse.get(category, type2);
+      expect(result2).toEqual({
+        category,
+        type: type2,
+        Class: TestService2,
+        singleton: true,
+        singletonArgs: [123, 'ABC'],
+      });
     });
   });
 
   describe('resolve', () => {
     test('あり', () => {
       const category = generateId();
-      registry.register(category, TestService1);
-      const result = registry.resolve(category, TestService1.TYPE);
+      const type = generateId();
+      registry.register(category, type, TestService1);
+      const result = registry.resolve(category, type);
       expect(result).toBe(TestService1);
     });
 
     test('カテゴリーなし', () => {
       const category = generateId();
-      registry.register(category, TestService1);
+      const type = generateId();
+      registry.register(category, type, TestService1);
       expect(() => {
-        const result = registry.resolve('abc', TestService1.TYPE);
+        const result = registry.resolve('abc', type);
       }).toThrow();
     });
 
     test('種別なし', () => {
       const category = generateId();
-      registry.register(category, TestService1);
+      const type = generateId();
+      registry.register(category, type, TestService1);
       expect(() => {
-        const result = registry.resolve(category, TestService2.TYPE);
+        const result = registry.resolve(category, 'abc');
       }).toThrow();
     });
   });

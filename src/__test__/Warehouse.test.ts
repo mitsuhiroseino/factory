@@ -7,42 +7,48 @@ describe('Warehouse', () => {
   describe('register', () => {
     test('1件', () => {
       const category = generateId();
-      warehouse.register(category, TestService1.TYPE, { Class: TestService1 });
-      const result = warehouse.get(category, TestService1.TYPE);
-      expect(result).toEqual({ Class: TestService1 });
+      const type = generateId();
+      warehouse.register({ category, type, Class: TestService1 });
+      const result = warehouse.get(category, type);
+      expect(result).toEqual({ category, type, Class: TestService1 });
     });
 
     test('2件', () => {
       const category = generateId();
-      warehouse.register(category, TestService1.TYPE, { Class: TestService1 });
-      warehouse.register(category, TestService2.TYPE, { Class: TestService2 });
-      const result = warehouse.get(category, TestService1.TYPE);
-      expect(result).toEqual({ Class: TestService1 });
+      const type1 = generateId();
+      const type2 = generateId();
+      warehouse.register({ category, type: type1, Class: TestService1 });
+      warehouse.register({ category, type: type2, Class: TestService2 });
+      const result = warehouse.get(category, type1);
+      expect(result).toEqual({ category, type: type1, Class: TestService1 });
     });
 
     test('重複', () => {
       console.warn = jest.fn();
       const category = generateId();
-      warehouse.register(category, TestService1.TYPE, { Class: TestService1 });
-      warehouse.register(category, TestService1.TYPE, { Class: TestService2 });
-      expect(console.warn).toHaveBeenCalledWith(`${TestService1.TYPE} of ${category} is duplicated.`);
+      const type = generateId();
+      warehouse.register({ category, type: type, Class: TestService1 });
+      warehouse.register({ category, type: type, Class: TestService2 });
+      expect(console.warn).toHaveBeenCalledWith(`${type} of ${category} is duplicated.`);
     });
   });
 
   describe('get', () => {
     test('カテゴリーなし', () => {
       const category = generateId();
-      warehouse.register(category, TestService1.TYPE, { Class: TestService1 });
+      const type = generateId();
+      warehouse.register({ category, type: type, Class: TestService1 });
       expect(() => {
-        const result = warehouse.get('abc', TestService1.TYPE);
+        const result = warehouse.get('abc', type);
       }).toThrow();
     });
 
     test('種別なし', () => {
       const category = generateId();
-      warehouse.register(category, TestService1.TYPE, { Class: TestService1 });
+      const type = generateId();
+      warehouse.register({ category, type: type, Class: TestService1 });
       expect(() => {
-        const result = warehouse.get(category, TestService2.TYPE);
+        const result = warehouse.get(category, 'abc');
       }).toThrow();
     });
   });
@@ -50,22 +56,25 @@ describe('Warehouse', () => {
   describe('has', () => {
     test('あり', () => {
       const category = generateId();
-      warehouse.register(category, TestService1.TYPE, { Class: TestService1 });
-      const result = warehouse.has(category, TestService1.TYPE);
+      const type = generateId();
+      warehouse.register({ category, type: type, Class: TestService1 });
+      const result = warehouse.has(category, type);
       expect(result).toBe(true);
     });
 
     test('カテゴリーなし', () => {
       const category = generateId();
-      warehouse.register(category, TestService1.TYPE, { Class: TestService1 });
-      const result = warehouse.has('abc', TestService1.TYPE);
+      const type = generateId();
+      warehouse.register({ category, type: type, Class: TestService1 });
+      const result = warehouse.has('abc', type);
       expect(result).toBe(false);
     });
 
     test('種別なし', () => {
       const category = generateId();
-      warehouse.register(category, TestService1.TYPE, { Class: TestService1 });
-      const result = warehouse.has(category, TestService2.TYPE);
+      const type = generateId();
+      warehouse.register({ category, type: type, Class: TestService1 });
+      const result = warehouse.has(category, 'abc');
       expect(result).toBe(false);
     });
   });

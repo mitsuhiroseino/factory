@@ -1,28 +1,11 @@
-import { IService } from 'src/types';
+export type TestService1Config = {
+  uuid?: string;
+};
 
-export default class TestService1 implements IService {
-  /**
-   * カテゴリー
-   */
-  static readonly CATEGORY = 'test';
+export default class TestService1 {
+  uuid: string;
 
-  /**
-   * 種別
-   */
-  static TYPE = 'test1';
-
-  /**
-   * 種別
-   */
-  static ALTS = ['Test1', 'TEST1'];
-
-  /**
-   * ID
-   */
-  readonly $id;
-
-  /**
-   * 種別
-   */
-  readonly type;
+  constructor(config: TestService1Config = {}) {
+    this.uuid = config.uuid;
+  }
 }

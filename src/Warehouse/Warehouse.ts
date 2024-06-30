@@ -1,4 +1,4 @@
-import { RegistrationInformation } from '../types';
+import { RegisteredInformation } from '../types';
 
 /**
  * サービスを管理するシングルトンインスタンス
@@ -7,7 +7,7 @@ class Warehouse {
   /**
    * 登録情報
    */
-  private _services: { [category: string]: { [type: string]: RegistrationInformation<any, any> } } = {};
+  private _services: { [category: string]: { [type: string]: RegisteredInformation<any> } } = {};
 
   /**
    * サービスを登録する
@@ -15,7 +15,8 @@ class Warehouse {
    * @param type 種別
    * @param service 登録情報
    */
-  register(category: string, type: string, service: RegistrationInformation<any, any>) {
+  register(service: RegisteredInformation<any>) {
+    const { category, type } = service;
     let services = this._services[category] || {};
     if (type in services) {
       console.warn(`${type} of ${category} is duplicated.`);
@@ -30,7 +31,7 @@ class Warehouse {
    * @param type 種別
    * @returns 登録情報
    */
-  get(category: string, type: string): RegistrationInformation<any, any> {
+  get(category: string, type: string): RegisteredInformation<any> {
     const services = this._services[category];
     const service = services?.[type];
     if (service) {

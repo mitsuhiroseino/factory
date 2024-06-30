@@ -1,9 +1,9 @@
-import { IService, RegistrableService, ServiceConfig, ServiceConstructor, ServiceInformation } from '../types';
+import { RegistrationSetting } from '../types';
 
 /**
  * Factoryのコンフィグ
  */
-export type FactoryConfig<I extends IService = IService, C extends ServiceConfig = ServiceConfig> = {
+export type FactoryConfig<S extends any> = {
   /**
    * カテゴリー
    */
@@ -12,5 +12,5 @@ export type FactoryConfig<I extends IService = IService, C extends ServiceConfig
   /**
    * サービス
    */
-  services?: RegistrableService<I, C>[];
+  services?: RegistrationSetting<S>[];
 };

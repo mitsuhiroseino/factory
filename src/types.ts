@@ -1,57 +1,36 @@
-import { Optional } from '@visue/utils';
-import { Identifiable } from '@visue/utils/identifier';
-
-/**
- * サービスのコンフィグ
- */
-export type ServiceConfig = Optional<Identifiable, '$id'> & {
-  /**
-   * 種別
-   */
-  type?: string;
-};
-
-/**
- * サービスのインターフェイス
- */
-export interface IService extends Identifiable {
-  /**
-   * 種別
-   */
-  readonly type: string;
-}
-
-/**
- * サービスのコンストラクター
- */
-export type ServiceConstructor<I extends IService = IService, C extends ServiceConfig = ServiceConfig> = (new (
-  config: C,
-) => I) & {
-  /**
-   * カテゴリー
-   */
-  CATEGORY: string;
-
-  /**
-   * 種別
-   */
-  TYPE: string;
-
-  /**
-   * 代替種別
-   */
-  ALTS?: string[];
-};
+import { Constructor, Optional } from '@visue/utils';
 
 /**
  * 登録する情報
  */
-export type ServiceInformation<I extends IService = IService, C extends ServiceConfig = ServiceConfig> = {
+export type RegistrationSetting<I = any> = RegisterOptions & {
+  /**
+   * 種別
+   */
+  type: string;
+
   /**
    * クラス
    */
-  Class?: ServiceConstructor<I, C>;
+  Class: Constructor<I>;
+};
 
+/**
+ * 登録された情報
+ */
+export type RegisteredInformation<I = any> = RegistrationSetting<I> & {
+  /**
+   * カテゴリー
+   */
+  category;
+
+  /**
+   * シングルトンインスタンス
+   */
+  instance?: I;
+};
+
+export type RegisterOptions<ARGS = unknown[]> = {
   /**
    * シングルトン
    */
@@ -60,25 +39,10 @@ export type ServiceInformation<I extends IService = IService, C extends ServiceC
   /**
    * シングルトンインスタンス生成時の設定
    */
-  singletonConfig?: C;
-};
-
-/**
- * 登録された情報
- */
-export type RegistrationInformation<
-  I extends IService = IService,
-  C extends ServiceConfig = ServiceConfig,
-> = ServiceInformation<I, C> & {
-  /**
-   * シングルトンインスタンス
-   */
-  instance?: I;
+  singletonArgs?: ARGS;
 };
 
 /**
  * 登録可能なサービス
  */
-export type RegistrableService<I extends IService = IService, C extends ServiceConfig = ServiceConfig> =
-  | ServiceConstructor<I, C>
-  | ServiceInformation<I, C>;
+export type RegistrableService<I = any> = Constructor<I> | RegistrationSetting<I>;

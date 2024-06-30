@@ -1,18 +1,15 @@
+import { Constructor } from '@visue/utils';
 import creator from '../Creator';
 import registry from '../Registry';
+import { RegisterOptions, RegistrationSetting } from '../types';
 import warehouse from '../Warehouse';
-import { IService, RegistrableService, ServiceConfig } from '../types';
 import { FactoryConfig } from './types';
 
 /**
  * Creatorで製造するサービスの管理を行うクラス
  * Creatorとservicesを直接紐づけることで循環参照が発生することを回避する
  */
-class Factory<
-  S extends IService = IService,
-  C extends ServiceConfig = ServiceConfig,
-  MC extends FactoryConfig<S, C> = FactoryConfig<S, C>,
-> {
+class Factory<S extends any = any, MC extends FactoryConfig<S> = FactoryConfig<S>> {
   /**
    * Warehouse
    */
@@ -33,14 +30,25 @@ class Factory<
   constructor(config: MC) {
     const { category, services } = config;
     this._category = category;
-    this.register(services);
+    if (services) {
+      this.registerAll(services);
+    }
   }
+
   /**
    * serviceをCreatorに登録する
    * @param service クラス
    */
-  register(services: RegistrableService<S, C> | RegistrableService<S, C>[]) {
-    this._registry.register(this._category, services);
+  registerAll(services: RegistrationSetting<S>[]) {
+    this._registry.registerAll(this._category, services);
+  }
+
+  /**
+   * serviceをCreatorに登録する
+   * @param service クラス
+   */
+  register(type: string, Class: Constructor<S>, options?: RegisterOptions) {
+    this._registry.register(this._category, type, Class, options);
   }
 
   /**
@@ -48,7 +56,7 @@ class Factory<
    * @param target
    * @returns
    */
-  get(target: string | C | S): S {
+  get(target: string | S): S {
     return this._creator.get<S>(this._category, target);
   }
 
@@ -57,17 +65,17 @@ class Factory<
    * @param targets
    * @returns
    */
-  from(targets: string | C | S | (string | C | S)[]): S[] {
+  from(targets: string | S | (string | S)[]): S[] {
     return this._creator.from<S>(this._category, targets);
   }
 
   /**
-   * コンフィグを元にインスタンスを生成して返却する
-   * @param target タイプまたはコンフィグ
+   * インスタンスを生成して返却する
+   * @param type 種別
    * @param config コンフィグ
    */
-  create(target: C | string, config?: Omit<C, 'type'>): S {
-    return this._creator.create(this._category, target, config);
+  create(type: string, args?: unknown[]): S {
+    return this._creator.create(this._category, type, args);
   }
 
   /**
