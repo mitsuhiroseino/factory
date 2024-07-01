@@ -1,7 +1,7 @@
 import { Constructor } from '@visue/utils';
 import creator from '../Creator';
 import registry from '../Registry';
-import { RegisterOptions, RegistrationSetting, ServiceConfig } from '../types';
+import { ProductConfig, RegisterOptions, RegistrationSetting } from '../types';
 import warehouse from '../Warehouse';
 import { FactoryConfig } from './types';
 
@@ -31,24 +31,24 @@ class Factory<S extends any = any, C extends FactoryConfig<S> = FactoryConfig<S>
   private _category: string;
 
   constructor(config: C) {
-    const { category, services } = config;
+    const { category, products: products } = config;
     this._category = category;
-    if (services) {
-      this.registerAll(services);
+    if (products) {
+      this.registerAll(products);
     }
   }
 
   /**
-   * serviceを纏めて登録する
-   * @param service クラス
+   * productを纏めて登録する
+   * @param products クラス
    */
-  registerAll(services: RegistrationSetting<S>[]) {
-    this._registry.registerAll(this._category, services);
+  registerAll(products: RegistrationSetting<S>[]) {
+    this._registry.registerAll(this._category, products);
   }
 
   /**
-   * serviceを登録する
-   * @param service クラス
+   * productを登録する
+   * @param product クラス
    */
   register(type: string, Class: Constructor<S>, options?: RegisterOptions) {
     this._registry.register(this._category, type, Class, options);
@@ -60,7 +60,7 @@ class Factory<S extends any = any, C extends FactoryConfig<S> = FactoryConfig<S>
    * @param target
    * @returns
    */
-  get(target: string | ServiceConfig | any): S {
+  get(target: string | ProductConfig | any): S {
     return this._creator.get<S>(this._category, target);
   }
 
@@ -69,7 +69,7 @@ class Factory<S extends any = any, C extends FactoryConfig<S> = FactoryConfig<S>
    * @param targets
    * @returns
    */
-  from(targets: string | ServiceConfig | any | (string | ServiceConfig | any)[]): S[] {
+  from(targets: string | ProductConfig | any | (string | ProductConfig | any)[]): S[] {
     return this._creator.from<S>(this._category, targets);
   }
 

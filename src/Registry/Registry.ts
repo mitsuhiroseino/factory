@@ -3,12 +3,12 @@ import { RegisteredInformation, RegisterOptions, RegistrationSetting } from '../
 import warehouse from '../Warehouse';
 
 /**
- * サービスを登録するためのクラス
+ * プロダクトを登録するためのクラス
  */
 class Registry {
-  registerAll<S extends any>(category: string, services: RegistrationSetting<S>[]) {
-    for (const service of services) {
-      this._register(category, service);
+  registerAll<S extends any>(category: string, products: RegistrationSetting<S>[]) {
+    for (const product of products) {
+      this._register(category, product);
     }
   }
 
@@ -22,19 +22,19 @@ class Registry {
   }
 
   private _register<S extends any>(category: string, setting: RegistrationSetting<S>) {
-    let service: RegisteredInformation<S> = {
+    let product: RegisteredInformation<S> = {
       category,
       ...setting,
     };
     if (setting.singletonArgs) {
-      service.singletonArgs = [].concat(setting.singletonArgs);
+      product.singletonArgs = [].concat(setting.singletonArgs);
     }
     // 情報を登録
-    warehouse.register(service);
+    warehouse.register(product);
   }
 
   /**
-   * サービスのクラスを取得する
+   * プロダクトのクラスを取得する
    * @param type 種別
    * @returns
    */

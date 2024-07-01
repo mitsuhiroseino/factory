@@ -1,7 +1,7 @@
 import { Constructor } from '@visue/utils';
 import registry from '../Registry';
 
-export default function Service(category: string, type: string, alts?: string[]) {
+export default function Product(category: string, type: string, alts?: string[]) {
   return function (Target: Constructor) {
     registry.register(category, type, Target);
     if (alts) {

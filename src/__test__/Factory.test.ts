@@ -1,7 +1,7 @@
 import generateId from '@visue/utils/identifier/generateId';
 import Factory from 'src/Factory';
-import TestService1 from './service/TestService1';
-import TestService2 from './service/TestService2';
+import TestProduct1 from './products/TestProduct1';
+import TestProduct2 from './products/TestProduct2';
 
 describe('Factory', () => {
   test('constructor', () => {
@@ -11,15 +11,15 @@ describe('Factory', () => {
     const uuid = generateId();
     const factory = new Factory({
       category,
-      services: [
-        { type: type1, Class: TestService1, singleton: true, singletonArgs: [{ uuid }] },
-        { type: type2, Class: TestService2 },
+      products: [
+        { type: type1, Class: TestProduct1, singleton: true, singletonArgs: [{ uuid }] },
+        { type: type2, Class: TestProduct2 },
       ],
     });
     const result1 = factory.get(type1);
-    expect(result1).toBeInstanceOf(TestService1);
+    expect(result1).toBeInstanceOf(TestProduct1);
     const result2 = factory.get(type2);
-    expect(result2).toBeInstanceOf(TestService2);
+    expect(result2).toBeInstanceOf(TestProduct2);
   });
 
   test('register', () => {
@@ -27,9 +27,9 @@ describe('Factory', () => {
     const type = generateId();
     const uuid = generateId();
     const factory = new Factory({ category });
-    factory.register(type, TestService1, { singleton: true, singletonArgs: [{ uuid }] });
+    factory.register(type, TestProduct1, { singleton: true, singletonArgs: [{ uuid }] });
     const result1 = factory.get(type);
-    expect(result1).toBeInstanceOf(TestService1);
+    expect(result1).toBeInstanceOf(TestProduct1);
     const result2 = factory.get(type);
     expect(result2).toBe(result1);
   });
@@ -41,13 +41,13 @@ describe('Factory', () => {
     const uuid = generateId();
     const factory = new Factory({ category });
     factory.registerAll([
-      { type: type1, Class: TestService1, singleton: true, singletonArgs: [{ uuid }] },
-      { type: type2, Class: TestService2 },
+      { type: type1, Class: TestProduct1, singleton: true, singletonArgs: [{ uuid }] },
+      { type: type2, Class: TestProduct2 },
     ]);
     const result1 = factory.get(type1);
-    expect(result1).toBeInstanceOf(TestService1);
+    expect(result1).toBeInstanceOf(TestProduct1);
     const result2 = factory.get(type2);
-    expect(result2).toBeInstanceOf(TestService2);
+    expect(result2).toBeInstanceOf(TestProduct2);
   });
 
   test('get', () => {
@@ -55,9 +55,9 @@ describe('Factory', () => {
     const type = generateId();
     const uuid = generateId();
     const factory = new Factory({ category });
-    factory.register(type, TestService1, { singleton: true, singletonArgs: [{ uuid }] });
+    factory.register(type, TestProduct1, { singleton: true, singletonArgs: [{ uuid }] });
     const result1 = factory.get(type);
-    expect(result1).toBeInstanceOf(TestService1);
+    expect(result1).toBeInstanceOf(TestProduct1);
     const result2 = factory.get(type);
     expect(result2).toBe(result1);
   });
@@ -69,12 +69,12 @@ describe('Factory', () => {
     const uuid = generateId();
     const factory = new Factory({ category });
     factory.registerAll([
-      { type: type1, Class: TestService1, singleton: true, singletonArgs: [{ uuid }] },
-      { type: type2, Class: TestService2 },
+      { type: type1, Class: TestProduct1, singleton: true, singletonArgs: [{ uuid }] },
+      { type: type2, Class: TestProduct2 },
     ]);
     const result = factory.from([type1, type2]);
-    expect(result[0]).toBeInstanceOf(TestService1);
-    expect(result[1]).toBeInstanceOf(TestService2);
+    expect(result[0]).toBeInstanceOf(TestProduct1);
+    expect(result[1]).toBeInstanceOf(TestProduct2);
   });
 
   test('create', () => {
@@ -83,12 +83,12 @@ describe('Factory', () => {
     const uuid1 = generateId();
     const uuid2 = generateId();
     const factory = new Factory({ category });
-    factory.register(type, TestService1);
+    factory.register(type, TestProduct1);
     const result1 = factory.create(type, [{ uuid: uuid1 }]);
-    expect(result1).toBeInstanceOf(TestService1);
+    expect(result1).toBeInstanceOf(TestProduct1);
     expect(result1.uuid).toBe(uuid1);
     const result2 = factory.create(type, [{ uuid: uuid2 }]);
-    expect(result2).toBeInstanceOf(TestService1);
+    expect(result2).toBeInstanceOf(TestProduct1);
     expect(result2.uuid).toBe(uuid2);
   });
 
@@ -97,7 +97,7 @@ describe('Factory', () => {
     const type = generateId();
     const uuid = generateId();
     const factory = new Factory({ category });
-    factory.register(type, TestService1, { singleton: true, singletonArgs: [{ uuid }] });
+    factory.register(type, TestProduct1, { singleton: true, singletonArgs: [{ uuid }] });
     const result1 = factory.has(type);
     expect(result1).toBe(true);
     const result2 = factory.has('abc');

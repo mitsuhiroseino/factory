@@ -10,7 +10,7 @@ export type FactoryConfig<S extends any> = {
   category: string;
 
   /**
-   * サービス
+   * プロダクト
    */
-  services?: RegistrationSetting<S>[];
+  products?: RegistrationSetting<S>[];
 };

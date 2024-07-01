@@ -1,9 +1,14 @@
 import { Constructor } from '@visue/utils';
 
 /**
+ * 登録可能なプロダクト
+ */
+export type RegistrableProduct<S = any> = Constructor<S> | RegistrationSetting<S>;
+
+/**
  * 登録する情報
  */
-export type RegistrationSetting<S = any> = RegisterOptions & {
+export type RegistrationSetting<S = any, A = unknown[]> = RegisterOptions<A> & {
   /**
    * 種別
    */
@@ -30,6 +35,9 @@ export type RegisteredInformation<S = any> = RegistrationSetting<S> & {
   instance?: S;
 };
 
+/**
+ * 登録処理のオプション
+ */
 export type RegisterOptions<A = unknown[]> = {
   /**
    * シングルトン
@@ -43,14 +51,9 @@ export type RegisterOptions<A = unknown[]> = {
 };
 
 /**
- * 登録可能なサービス
+ * プロダクトのインスタンスを取得する際の設定
  */
-export type RegistrableService<S = any> = Constructor<S> | RegistrationSetting<S>;
-
-/**
- * サービスのインスタンスを取得する際の設定
- */
-export type ServiceConfig = {
+export type ProductConfig = {
   /**
    * 種別
    */
