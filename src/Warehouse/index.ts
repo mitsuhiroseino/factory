@@ -1,1 +1,2 @@
-export { default } from './Warehouse';
+import Warehouse from './Warehouse';
+export default new Warehouse();

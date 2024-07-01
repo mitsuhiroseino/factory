@@ -1,7 +1,7 @@
 import { Constructor } from '@visue/utils';
 import creator from '../Creator';
 import registry from '../Registry';
-import { RegisterOptions, RegistrationSetting } from '../types';
+import { RegisterOptions, RegistrationSetting, ServiceConfig } from '../types';
 import warehouse from '../Warehouse';
 import { FactoryConfig } from './types';
 
@@ -9,7 +9,7 @@ import { FactoryConfig } from './types';
  * ファクトリークラス
  * Registry、Creator、Warehouseのメソッドにアクセスする
  */
-class Factory<S extends any = any, MC extends FactoryConfig<S> = FactoryConfig<S>> {
+class Factory<S extends any = any, C extends FactoryConfig<S> = FactoryConfig<S>> {
   /**
    * Warehouse
    */
@@ -30,7 +30,7 @@ class Factory<S extends any = any, MC extends FactoryConfig<S> = FactoryConfig<S
    */
   private _category: string;
 
-  constructor(config: MC) {
+  constructor(config: C) {
     const { category, services } = config;
     this._category = category;
     if (services) {
@@ -60,7 +60,7 @@ class Factory<S extends any = any, MC extends FactoryConfig<S> = FactoryConfig<S
    * @param target
    * @returns
    */
-  get(target: string | S): S {
+  get(target: string | ServiceConfig | any): S {
     return this._creator.get<S>(this._category, target);
   }
 
@@ -69,7 +69,7 @@ class Factory<S extends any = any, MC extends FactoryConfig<S> = FactoryConfig<S
    * @param targets
    * @returns
    */
-  from(targets: string | S | (string | S)[]): S[] {
+  from(targets: string | ServiceConfig | any | (string | ServiceConfig | any)[]): S[] {
     return this._creator.from<S>(this._category, targets);
   }
 

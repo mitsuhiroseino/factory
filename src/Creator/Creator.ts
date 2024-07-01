@@ -55,4 +55,4 @@ class Creator {
     }
   }
 }
-export default new Creator();
+export default Creator;

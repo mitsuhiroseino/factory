@@ -1,9 +1,9 @@
-import { Constructor, Optional } from '@visue/utils';
+import { Constructor } from '@visue/utils';
 
 /**
  * 登録する情報
  */
-export type RegistrationSetting<I = any> = RegisterOptions & {
+export type RegistrationSetting<S = any> = RegisterOptions & {
   /**
    * 種別
    */
@@ -12,13 +12,13 @@ export type RegistrationSetting<I = any> = RegisterOptions & {
   /**
    * クラス
    */
-  Class: Constructor<I>;
+  Class: Constructor<S>;
 };
 
 /**
  * 登録された情報
  */
-export type RegisteredInformation<I = any> = RegistrationSetting<I> & {
+export type RegisteredInformation<S = any> = RegistrationSetting<S> & {
   /**
    * カテゴリー
    */
@@ -27,10 +27,10 @@ export type RegisteredInformation<I = any> = RegistrationSetting<I> & {
   /**
    * シングルトンインスタンス
    */
-  instance?: I;
+  instance?: S;
 };
 
-export type RegisterOptions<ARGS = unknown[]> = {
+export type RegisterOptions<A = unknown[]> = {
   /**
    * シングルトン
    */
@@ -39,13 +39,13 @@ export type RegisterOptions<ARGS = unknown[]> = {
   /**
    * シングルトンインスタンス生成時の設定
    */
-  singletonArgs?: ARGS;
+  singletonArgs?: A;
 };
 
 /**
  * 登録可能なサービス
  */
-export type RegistrableService<I = any> = Constructor<I> | RegistrationSetting<I>;
+export type RegistrableService<S = any> = Constructor<S> | RegistrationSetting<S>;
 
 /**
  * サービスのインスタンスを取得する際の設定

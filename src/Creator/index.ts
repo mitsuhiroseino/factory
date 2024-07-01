@@ -1,1 +1,2 @@
-export { default } from './Creator';
+import Creator from './Creator';
+export default new Creator();

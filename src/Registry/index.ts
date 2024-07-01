@@ -1,1 +1,2 @@
-export { default } from './Registry';
+import Registry from './Registry';
+export default new Registry();

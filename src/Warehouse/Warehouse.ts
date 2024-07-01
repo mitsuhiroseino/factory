@@ -53,4 +53,4 @@ class Warehouse {
   }
 }
 
-export default new Warehouse();
+export default Warehouse;
