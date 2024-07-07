@@ -3,12 +3,12 @@ import { Constructor } from '@visue/utils';
 /**
  * 登録可能なプロダクト
  */
-export type RegistrableProduct<S = any> = Constructor<S> | RegistrationSetting<S>;
+export type RegistrableProduct<P = any> = Constructor<P> | RegistrationSetting<P>;
 
 /**
  * 登録する情報
  */
-export type RegistrationSetting<S = any, A = unknown[]> = RegisterOptions<A> & {
+export type RegistrationSetting<P = any, A = unknown[]> = RegisterOptions<A> & {
   /**
    * 種別
    */
@@ -17,13 +17,13 @@ export type RegistrationSetting<S = any, A = unknown[]> = RegisterOptions<A> & {
   /**
    * クラス
    */
-  Class: Constructor<S>;
+  Class: Constructor<P>;
 };
 
 /**
  * 登録された情報
  */
-export type RegisteredInformation<S = any> = RegistrationSetting<S> & {
+export type RegisteredInformation<P = any> = RegistrationSetting<P> & {
   /**
    * カテゴリー
    */
@@ -32,7 +32,7 @@ export type RegisteredInformation<S = any> = RegistrationSetting<S> & {
   /**
    * シングルトンインスタンス
    */
-  instance?: S;
+  instance?: P;
 };
 
 /**

@@ -13,14 +13,14 @@ class Creator {
    * @param target
    * @returns
    */
-  get<S>(category: string, target: string | ProductConfig | any): S {
+  get<P>(category: string, target: string | ProductConfig | any): P {
     if (isPlainObject(target)) {
       const conifg = target as ProductConfig;
       return this.create(category, conifg.type, conifg.args);
     } else if (isString(target)) {
       return this.create(category, target as string);
     } else {
-      return target as S;
+      return target as P;
     }
   }
 
@@ -29,8 +29,8 @@ class Creator {
    * @param targets
    * @returns
    */
-  from<S extends any>(category: string, targets: string | ProductConfig | S | (string | ProductConfig | S)[]): S[] {
-    return asArray(targets).map((target) => this.get<S>(category, target));
+  from<P extends any>(category: string, targets: string | ProductConfig | P | (string | ProductConfig | P)[]): P[] {
+    return asArray(targets).map((target) => this.get<P>(category, target));
   }
 
   /**
@@ -38,7 +38,7 @@ class Creator {
    * @param target 種別または設定
    * @param config 設定
    */
-  create<S extends any>(category: string, type: string, args: unknown[] = []): S {
+  create<P extends any>(category: string, type: string, args: unknown[] = []): P {
     const product = warehouse.get(category, type);
     const { Class: ProductClass, singleton, singletonArgs, instance } = product;
     if (singleton) {

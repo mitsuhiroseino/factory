@@ -1,16 +1,6 @@
-import { RegistrationSetting } from '../types';
+import { FactoryBaseConfig } from '../FactoryBase';
 
 /**
  * Factoryのコンフィグ
  */
-export type FactoryConfig<S extends any> = {
-  /**
-   * カテゴリー
-   */
-  category: string;
-
-  /**
-   * プロダクト
-   */
-  products?: RegistrationSetting<S>[];
-};
+export type FactoryConfig<P extends any> = FactoryBaseConfig<P>;

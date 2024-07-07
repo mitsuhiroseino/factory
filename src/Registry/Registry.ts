@@ -6,14 +6,14 @@ import warehouse from '../Warehouse';
  * プロダクトを登録するためのクラス
  */
 class Registry {
-  registerAll<S extends any>(category: string, products: RegistrationSetting<S>[]) {
+  registerAll<P extends any>(category: string, products: RegistrationSetting<P>[]) {
     for (const product of products) {
       this._register(category, product);
     }
   }
 
-  register<S extends any>(category: string, type: string, Class: Constructor<S>, options?: RegisterOptions) {
-    const setting: RegistrationSetting<S> = {
+  register<P extends any>(category: string, type: string, Class: Constructor<P>, options?: RegisterOptions) {
+    const setting: RegistrationSetting<P> = {
       type,
       Class,
       ...options,
@@ -21,8 +21,8 @@ class Registry {
     this._register(category, setting);
   }
 
-  private _register<S extends any>(category: string, setting: RegistrationSetting<S>) {
-    let product: RegisteredInformation<S> = {
+  private _register<P extends any>(category: string, setting: RegistrationSetting<P>) {
+    let product: RegisteredInformation<P> = {
       category,
       ...setting,
     };
@@ -38,7 +38,7 @@ class Registry {
    * @param type 種別
    * @returns
    */
-  resolve<S extends any>(category: string, type: string): Constructor<S> {
+  resolve<P extends any>(category: string, type: string): Constructor<P> {
     return warehouse.get(category, type).Class;
   }
 }
