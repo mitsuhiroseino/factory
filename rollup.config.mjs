@@ -15,7 +15,7 @@ const INPUT = './src/index.ts',
   OUTPUT_CJS = OUTPUT,
   OUTPUT_ESM = OUTPUT,
   BABEL_CONFIG_PATH = path.resolve('babel.config.js'),
-  TEST_FILE = /.+\.test\..+/;
+  TSCONFIG_PATH = path.resolve('tsconfig.json');
 
 // commonjs用とesmodule用のソースを出力する
 const config = [
@@ -38,16 +38,15 @@ const config = [
     plugins: [
       nodeResolve(),
       typescript({
-        tsconfig: './tsconfig.json',
-        exclude: [TEST_FILE],
+        tsconfig: TSCONFIG_PATH,
         declarationDir: OUTPUT_CJS,
         outDir: OUTPUT_CJS,
       }),
-      // babel({
-      //   extensions: EXTENTIONS,
-      //   babelHelpers: 'runtime',
-      //   configFile: BABEL_CONFIG_PATH,
-      // }),
+      babel({
+        extensions: EXTENTIONS,
+        babelHelpers: 'runtime',
+        configFile: BABEL_CONFIG_PATH,
+      }),
       commonjs(),
       packagejson({
         baseContents: (pkgjson) => ({
@@ -56,7 +55,7 @@ const config = [
           author: pkgjson.author,
           license: pkgjson.license,
           main: `index.${EXTENTION_CJS}`,
-          module: `esm/index.${EXTENTION_ESM}`,
+          module: `index.${EXTENTION_ESM}`,
           types: 'index.d.ts',
         }),
       }),
@@ -81,17 +80,16 @@ const config = [
     plugins: [
       nodeResolve(),
       typescript({
-        tsconfig: './tsconfig.json',
+        tsconfig: TSCONFIG_PATH,
         declaration: false,
         declarationMap: false,
-        exclude: [TEST_FILE],
         outDir: OUTPUT_ESM,
       }),
-      // babel({
-      //   extensions: EXTENTIONS,
-      //   babelHelpers: 'runtime',
-      //   configFile: BABEL_CONFIG_PATH,
-      // }),
+      babel({
+        extensions: EXTENTIONS,
+        babelHelpers: 'runtime',
+        configFile: BABEL_CONFIG_PATH,
+      }),
       commonjs(),
     ],
   },
