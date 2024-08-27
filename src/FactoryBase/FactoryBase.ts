@@ -31,11 +31,12 @@ class FactoryBase<P extends any = any, C extends FactoryBaseConfig<P> = FactoryB
   protected _category: string;
 
   constructor(config: C) {
-    const { category, products } = config;
+    const { category, products, creator, registry, warehouse } = config;
+    this._creator = creator;
+    this._registry = registry;
+    this._warehouse = warehouse;
     this._category = category;
-    if (products) {
-      this.registerAll(products);
-    }
+    this.registerAll(products);
   }
 
   /**
@@ -43,7 +44,9 @@ class FactoryBase<P extends any = any, C extends FactoryBaseConfig<P> = FactoryB
    * @param products クラス
    */
   registerAll(products: RegistrationSetting<P>[]) {
-    this._registry.registerAll(this._category, products);
+    if (products) {
+      this._registry.registerAll(this._category, products);
+    }
   }
 
   /**

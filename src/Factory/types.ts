@@ -1,6 +1,6 @@
-import { FactoryBaseConfig } from '../FactoryBase';
+import { FactoryBaseConfigBase } from '../FactoryBase';
 
 /**
  * Factoryのコンフィグ
  */
-export type FactoryConfig<P extends any> = FactoryBaseConfig<P>;
+export type FactoryConfig<P extends any> = FactoryBaseConfigBase<P>;

@@ -14,10 +14,7 @@ class EasyFactory<
   C extends EasyFactoryConfig<P> = EasyFactoryConfig<P>,
 > extends FactoryBase<P, C> {
   constructor(config: C) {
-    super(config);
-    this._warehouse = warehouse;
-    this._creator = creator;
-    this._registry = registry;
+    super({ warehouse, creator, registry, ...config });
   }
 }
 export default EasyFactory;

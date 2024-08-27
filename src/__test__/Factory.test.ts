@@ -84,10 +84,10 @@ describe('Factory', () => {
     const uuid2 = generateId();
     const factory = new Factory({ category });
     factory.register(type, TestProduct1);
-    const result1 = factory.create(type, [{ uuid: uuid1 }]);
+    const result1: TestProduct1 = factory.create(type, [{ uuid: uuid1 }]);
     expect(result1).toBeInstanceOf(TestProduct1);
     expect(result1.uuid).toBe(uuid1);
-    const result2 = factory.create(type, [{ uuid: uuid2 }]);
+    const result2: TestProduct1 = factory.create(type, [{ uuid: uuid2 }]);
     expect(result2).toBeInstanceOf(TestProduct1);
     expect(result2.uuid).toBe(uuid2);
   });
